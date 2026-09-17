@@ -2,7 +2,11 @@
 
 namespace App\Providers\Filament;
 
+use Caresome\FilamentAuthDesigner\AuthDesignerPlugin;
+use Caresome\FilamentAuthDesigner\Data\AuthPageConfig;
+use Caresome\FilamentAuthDesigner\Enums\MediaPosition;
 use Filament\Enums\DatabaseNotificationsPosition;
+use Filament\Enums\UserMenuPosition;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -30,7 +34,12 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->colors([
+                'danger' => Color::Red,
+                'gray' => Color::Zinc,
+                'info' => Color::Blue,
                 'primary' => Color::Blue,
+                'success' => Color::Green,
+                'warning' => Color::Amber,
             ])
             ->brandName('Edudata')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
@@ -57,7 +66,16 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
-            ->databaseNotifications(position: DatabaseNotificationsPosition::Topbar);
+            ->userMenu(position: UserMenuPosition::Topbar)
+            ->databaseNotifications(position: DatabaseNotificationsPosition::Topbar)
+            ->plugins([
+                AuthDesignerPlugin::make()
+                    ->login(fn (AuthPageConfig $config) => $config
+                        ->media(asset('assets/illustrationstudent.webp'))
+                        ->mediaPosition(MediaPosition::Right)
+                    )
+                    ->themeToggle(),
+            ]);
 
     }
 }

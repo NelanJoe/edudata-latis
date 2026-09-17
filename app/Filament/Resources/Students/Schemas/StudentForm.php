@@ -14,14 +14,17 @@ class StudentForm
         return $schema
             ->components([
                 TextInput::make('name')
+                    ->label('Nama')
                     ->required(),
 
                 TextInput::make('email')
-                    ->label('Email address')
+                    ->label('Email')
                     ->email()
                     ->required(),
 
                 TextInput::make('nis')
+                    ->label('NIS')
+                    ->numeric()
                     ->maxLength(8)
                     ->required(),
 
@@ -33,6 +36,7 @@ class StudentForm
                     ->preload(),
 
                 FileUpload::make('foto')
+
                     ->maxSize(100)
                     ->acceptedFileTypes([
                         'image/jpeg',

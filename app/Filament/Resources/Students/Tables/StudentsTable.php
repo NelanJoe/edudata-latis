@@ -2,15 +2,14 @@
 
 namespace App\Filament\Resources\Students\Tables;
 
-use App\Filament\Exports\StudentExporter;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Actions\ExportBulkAction;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 
 class StudentsTable
@@ -30,7 +29,7 @@ class StudentsTable
                     ->searchable(),
 
                 TextColumn::make('email')
-                    ->label('Email address')
+                    ->label('Email')
                     ->icon(Heroicon::Envelope)
                     ->iconColor('primary')
                     ->searchable(),
@@ -50,16 +49,14 @@ class StudentsTable
             ])
             ->defaultSort('created_at', 'desc')
             ->filters([
-                //
+                SelectFilter::make('institution_id')
+                    ->relationship('institution', 'name'),
             ])
             ->recordActions([
                 EditAction::make(),
                 DeleteAction::make(),
             ])
             ->toolbarActions([
-                ExportBulkAction::make()
-                    ->exporter(StudentExporter::class)
-                    ->color('primary'),
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
